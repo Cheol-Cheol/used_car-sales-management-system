@@ -10,10 +10,15 @@ public class BaseObject {
 
 	public BaseObject() {
 		initCreatedAt();
+		initUpdatedAt();
 	}
 
 	private void initCreatedAt() {
 		this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	}
+
+	private void initUpdatedAt() {
+		this.updatedAt = "";
 	}
 
 	public String getCreatedAt() {

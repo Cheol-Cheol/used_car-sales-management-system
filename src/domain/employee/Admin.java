@@ -1,6 +1,6 @@
 package domain.employee;
 
-import domain.common.constant.Role;
+import domain.common.constants.Role;
 
 public class Admin extends Employee {
 

@@ -44,7 +44,7 @@ public class Employee extends BaseObject {
 
 	@Override
 	public String toString() {
-		return String.format("[%d] %-5s %-15s", getEmpId(), getName(), getTel());
+		return String.format("[%d] %-5s %-15s %-15s %-15s", getEmpId(), getName(), getTel(), getCreatedAt(), getUpdatedAt());
 	}
 
 }

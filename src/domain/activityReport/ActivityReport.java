@@ -1,8 +1,8 @@
 package domain.activityReport;
 
 import domain.common.BaseObject;
-import domain.common.constant.ActivityType;
-import domain.common.constant.ExecutionStatus;
+import domain.common.constants.ActivityType;
+import domain.common.constants.ExecutionStatus;
 import domain.employee.Dealer;
 
 public class ActivityReport extends BaseObject {

@@ -28,7 +28,6 @@ public class EmployeeManager {
 		Employee employee = employees.stream().filter(e -> e.getEmpId() == empId).findFirst()
 				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 		employees.remove(employee);
-		System.out.println(employees.size());
 	}
 
 }

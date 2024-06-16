@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.activityReport.ActivityReport;
-import domain.common.constant.Role;
+import domain.common.constants.Role;
 import domain.customer.Customer;
 import domain.sales.Sales;
 

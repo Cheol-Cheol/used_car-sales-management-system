@@ -1,8 +1,8 @@
 package domain.car;
 
-import domain.common.constant.CarColor;
-import domain.common.constant.CarType;
-import domain.common.constant.PurchaseStatus;
+import domain.common.constants.CarColor;
+import domain.common.constants.CarType;
+import domain.common.constants.PurchaseStatus;
 
 public class Car {
 

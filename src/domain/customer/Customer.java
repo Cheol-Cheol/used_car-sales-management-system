@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import domain.common.BaseObject;
-import domain.common.constant.CarType;
-import domain.common.constant.CustomerType;
+import domain.common.constants.CarType;
+import domain.common.constants.CustomerType;
 import domain.employee.Dealer;
 import domain.sales.Sales;
 

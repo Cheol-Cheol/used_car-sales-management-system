@@ -1,4 +1,4 @@
-package domain.common.constant;
+package domain.common.constants;
 
 public enum ExecutionStatus {
 

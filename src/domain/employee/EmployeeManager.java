@@ -4,28 +4,34 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-public class EmployeeManager {
+import domain.common.Manager;
 
-	List<Employee> employees;
+public class EmployeeManager implements Manager<Employee> {
+
+	private final List<Employee> employees;
 
 	public EmployeeManager() {
 		employees = new ArrayList();
 	}
 
-	public void addEmployee(Employee employee) {
-		employees.add(employee);
+	@Override
+	public void addItem(Employee item) {
+		employees.add(item);
 	}
 
+	@Override
 	public void getList() {
 		employees.stream().forEach(System.out::println);
 	}
 
-	public void getEmployee(int empId) {
-		employees.stream().filter(e -> e.getEmpId() == empId).forEach(System.out::println);
+	@Override
+	public void getItem(int id) {
+		employees.stream().filter(el -> el.getEmpId() == id).forEach(System.out::println);
 	}
 
-	public void deleteEmployee(int empId) {
-		Employee employee = employees.stream().filter(e -> e.getEmpId() == empId).findFirst()
+	@Override
+	public void deleteItem(int id) {
+		Employee employee = employees.stream().filter(e -> e.getEmpId() == id).findFirst()
 				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 		employees.remove(employee);
 	}

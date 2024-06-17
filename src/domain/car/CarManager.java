@@ -3,10 +3,10 @@ package domain.car;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import domain.common.DummyData;
 import domain.common.Manager;
-import domain.employee.Employee;
 
 public class CarManager implements Manager<Car> {
 
@@ -27,8 +27,8 @@ public class CarManager implements Manager<Car> {
 	}
 
 	@Override
-	public void getItem(int id) {
-		cars.stream().filter(el -> el.getCarId() == id).forEach(System.out::println);
+	public Optional<Car> getItem(int id) {
+		return cars.stream().filter(el -> el.getCarId() == id).findFirst();
 	}
 
 	@Override

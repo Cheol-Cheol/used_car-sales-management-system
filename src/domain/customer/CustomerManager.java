@@ -3,10 +3,10 @@ package domain.customer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import domain.common.DummyData;
 import domain.common.Manager;
-import domain.employee.Employee;
 
 public class CustomerManager implements Manager<Customer> {
 
@@ -27,8 +27,8 @@ public class CustomerManager implements Manager<Customer> {
 	}
 
 	@Override
-	public void getItem(int id) {
-		customers.stream().filter(el -> el.getCustomerId() == id).forEach(System.out::println);
+	public Optional<Customer> getItem(int id) {
+		return customers.stream().filter(el -> el.getCustomerId() == id).findFirst();
 	}
 
 	@Override

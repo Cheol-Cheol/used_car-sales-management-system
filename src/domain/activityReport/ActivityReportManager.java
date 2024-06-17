@@ -3,9 +3,9 @@ package domain.activityReport;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import domain.common.Manager;
-import domain.employee.Employee;
 
 public class ActivityReportManager implements Manager<ActivityReport> {
 
@@ -26,8 +26,8 @@ public class ActivityReportManager implements Manager<ActivityReport> {
 	}
 
 	@Override
-	public void getItem(int id) {
-		activityReports.stream().filter(el -> el.getActivityReportId() == id).forEach(System.out::println);
+	public Optional<ActivityReport> getItem(int id) {
+		return activityReports.stream().filter(el -> el.getActivityReportId() == id).findFirst();
 	}
 
 	@Override

@@ -3,9 +3,9 @@ package domain.sale;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import domain.common.Manager;
-import domain.employee.Employee;
 
 public class SaleManager implements Manager<Sale> {
 
@@ -26,8 +26,8 @@ public class SaleManager implements Manager<Sale> {
 	}
 
 	@Override
-	public void getItem(int id) {
-		sales.stream().filter(el -> el.getSalesId() == id).forEach(System.out::println);
+	public Optional<Sale> getItem(int id) {
+		return sales.stream().filter(el -> el.getSalesId() == id).findFirst();
 	}
 
 	@Override

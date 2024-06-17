@@ -17,16 +17,11 @@ import domain.sale.Sale;
 public class DummyData {
 
 	public static List<Car> initCars() {
-		return Arrays.asList(
-				new Car("BMW", "X4", CarColor.BLACK, PurchaseStatus.IN_STOCK, "12가 1234", 15000000, 20000, "2022",
-						false),
-				new Car("KIA", "셀토스", CarColor.BLUE, PurchaseStatus.IN_STOCK, "32라 5234", 5000000, 50000, "2005", true),
-				new Car("HYUNDAI", "G90", CarColor.BLACK, PurchaseStatus.IN_STOCK, "45바 3421", 35000000, 40000, "2023",
-						false),
-				new Car("AUDI", "A4", CarColor.WHITE, PurchaseStatus.IN_STOCK, "15다 8234", 15000000, 15000, "2022",
-						false),
-				new Car("BENZ", "E300", CarColor.WHITE, PurchaseStatus.IN_STOCK, "15마 4323", 35000000, 23000, "2023",
-						true));
+		return Arrays.asList(new Car("BMW", "X4", CarColor.BLACK, "12가 1234", 15000000, 20000, "2022", false),
+				new Car("KIA", "셀토스", CarColor.BLUE, "32라 5234", 5000000, 50000, "2005", true),
+				new Car("HYUNDAI", "G90", CarColor.BLACK, "45바 3421", 35000000, 40000, "2023", false),
+				new Car("AUDI", "A4", CarColor.WHITE, "15다 8234", 15000000, 15000, "2022", false),
+				new Car("BENZ", "E300", CarColor.WHITE, "15마 4323", 35000000, 23000, "2023", true));
 	}
 
 	public static List<Employee> initEmpolyees() {

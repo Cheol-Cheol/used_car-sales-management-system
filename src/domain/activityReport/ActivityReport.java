@@ -3,6 +3,7 @@ package domain.activityReport;
 import domain.common.BaseObject;
 import domain.common.constants.ActivityType;
 import domain.common.constants.ExecutionStatus;
+import domain.customer.Customer;
 import domain.employee.Dealer;
 
 public class ActivityReport extends BaseObject {
@@ -11,19 +12,25 @@ public class ActivityReport extends BaseObject {
 
 	private int activityReportId;
 	private Dealer dealer;
+	private Customer customer;
 	private ActivityType activityType;
 	private ExecutionStatus executionStatus;
 	private String content;
 	private String memo;
 
-	public ActivityReport(Dealer dealer, String content, String memo) {
+	public ActivityReport(Dealer dealer, Customer customer, String content, String memo) {
 		activityReportId = activityReportUID++;
 		activityType = ActivityType.EMPTY;
 		executionStatus = ExecutionStatus.INCOMPLETE;
 
 		this.dealer = dealer;
+		this.customer = customer;
 		this.content = content;
 		this.memo = memo;
+	}
+
+	public Customer getCustomer() {
+		return customer;
 	}
 
 	public int getActivityReportId() {
@@ -48,6 +55,10 @@ public class ActivityReport extends BaseObject {
 
 	public String getMemo() {
 		return memo;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
 	}
 
 	public void setActivityReportId(int activityId) {

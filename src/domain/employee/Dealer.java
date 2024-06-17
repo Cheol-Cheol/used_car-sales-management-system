@@ -49,6 +49,15 @@ public class Dealer extends Employee {
 		myCustomers.stream().forEach(System.out::println);
 	}
 
+	public void getActivityReportList() {
+		myActivityReports.stream().forEach(System.out::println);
+	}
+
+	public ActivityReport getActivityReportItem(int id) {
+		return myActivityReports.stream().filter(el -> el.getActivityReportId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
+	}
+
 	public Customer getItem(int id) {
 		return myCustomers.stream().filter(el -> el.getCustomerId() == id).findFirst()
 				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
@@ -59,4 +68,11 @@ public class Dealer extends Employee {
 				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 		myCustomers.remove(customer);
 	}
+
+	public void deleteActivityReportItem(int id) {
+		ActivityReport activityReport = myActivityReports.stream().filter(el -> el.getActivityReportId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
+		myActivityReports.remove(activityReport);
+	}
+	
 }

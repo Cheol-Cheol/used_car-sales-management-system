@@ -19,15 +19,15 @@ public class Car {
 	private String birth;
 	private boolean accidentStatus;
 
-	public Car(String brand, String model, CarColor carColor, PurchaseStatus purchaseStatus, String carNum, int price,
-			int distance, String birth, boolean accidentStatus) {
+	public Car(String brand, String model, CarColor carColor, String carNum, int price, int distance, String birth,
+			boolean accidentStatus) {
 
 		carId = carUID++;
+		purchaseStatus = PurchaseStatus.IN_STOCK;
 
 		this.brand = brand;
 		this.model = model;
 		this.carColor = carColor;
-		this.purchaseStatus = purchaseStatus;
 		this.carNum = carNum;
 		this.price = price;
 		this.distance = distance;
@@ -113,6 +113,13 @@ public class Car {
 
 	public void setAccidentStatus(boolean accidentStatus) {
 		this.accidentStatus = accidentStatus;
+	}
+
+	@Override
+	public String toString() {
+		return "Car [carId=" + carId + ", brand=" + brand + ", model=" + model + ", carColor=" + carColor
+				+ ", purchaseStatus=" + purchaseStatus + ", carNum=" + carNum + ", price=" + price + ", distance="
+				+ distance + ", birth=" + birth + ", accidentStatus=" + accidentStatus + "]";
 	}
 
 }

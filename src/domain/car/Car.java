@@ -9,7 +9,8 @@ public class Car {
 	private static int carUID = 1;
 
 	private int carId;
-	private CarType carType;
+	private String brand;
+	private String model;
 	private CarColor carColor;
 	private PurchaseStatus purchaseStatus; // 계약 유무
 	private String carNum; // 차량번호
@@ -18,12 +19,13 @@ public class Car {
 	private String birth;
 	private boolean accidentStatus;
 
-	public Car(CarType carType, CarColor carColor, PurchaseStatus purchaseStatus, String carNum, int price,
+	public Car(String brand, String model, CarColor carColor, PurchaseStatus purchaseStatus, String carNum, int price,
 			int distance, String birth, boolean accidentStatus) {
 
 		carId = carUID++;
 
-		this.carType = carType;
+		this.brand = brand;
+		this.model = model;
 		this.carColor = carColor;
 		this.purchaseStatus = purchaseStatus;
 		this.carNum = carNum;
@@ -37,8 +39,12 @@ public class Car {
 		return carId;
 	}
 
-	public CarType getCarType() {
-		return carType;
+	public String getBrand() {
+		return brand;
+	}
+
+	public String getModel() {
+		return model;
 	}
 
 	public CarColor getCarColor() {
@@ -73,8 +79,12 @@ public class Car {
 		this.carId = carId;
 	}
 
-	public void setCarType(CarType carType) {
-		this.carType = carType;
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public void setCarColor(CarColor carColor) {

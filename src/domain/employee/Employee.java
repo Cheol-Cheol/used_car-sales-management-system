@@ -1,6 +1,7 @@
 package domain.employee;
 
 import domain.common.BaseObject;
+import domain.common.constants.Role;
 
 public class Employee extends BaseObject {
 
@@ -9,13 +10,15 @@ public class Employee extends BaseObject {
 	private int empId;
 	private String name;
 	private String tel;
+	private Role role;
 
-	public Employee(String name, String tel) {
+	public Employee(String name, String tel, Role role) {
 		super();
 		empId = empUID++;
 
 		this.name = name;
 		this.tel = tel;
+		this.role = role;
 	}
 
 	public int getEmpId() {
@@ -30,6 +33,10 @@ public class Employee extends BaseObject {
 		return tel;
 	}
 
+	public Role getRole() {
+		return role;
+	}
+
 	public void setEmpId(int empId) {
 		this.empId = empId;
 	}
@@ -42,9 +49,14 @@ public class Employee extends BaseObject {
 		this.tel = tel;
 	}
 
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("[%d] %-5s %-15s %-15s %-15s", getEmpId(), getName(), getTel(), getCreatedAt(), getUpdatedAt());
+		return String.format("[%d] %-5s %-5s %-15s %-15s %-15s", getEmpId(), getRole().name(), getName(), getTel(),
+				getCreatedAt(), getUpdatedAt());
 	}
 
 }

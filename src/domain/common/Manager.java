@@ -1,8 +1,6 @@
 package domain.common;
 
-import java.util.NoSuchElementException;
-
-import domain.employee.Employee;
+import java.util.Optional;
 
 public interface Manager<T> {
 
@@ -10,7 +8,7 @@ public interface Manager<T> {
 
 	public void getList();
 
-	public void getItem(int id);
+	public Optional<T> getItem(int id);
 
 	public void deleteItem(int id);
 

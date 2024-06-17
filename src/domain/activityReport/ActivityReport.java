@@ -7,9 +7,9 @@ import domain.employee.Dealer;
 
 public class ActivityReport extends BaseObject {
 
-	private static int activityUID = 1;
+	private static int activityReportUID = 1;
 
-	private int activityId;
+	private int activityReportId;
 	private Dealer dealer;
 	private ActivityType activityType;
 	private ExecutionStatus executionStatus;
@@ -17,7 +17,7 @@ public class ActivityReport extends BaseObject {
 	private String memo;
 
 	public ActivityReport(Dealer dealer, String content, String memo) {
-		activityId = activityUID++;
+		activityReportId = activityReportUID++;
 		activityType = ActivityType.EMPTY;
 		executionStatus = ExecutionStatus.INCOMPLETE;
 
@@ -26,8 +26,8 @@ public class ActivityReport extends BaseObject {
 		this.memo = memo;
 	}
 
-	public int getActivityId() {
-		return activityId;
+	public int getActivityReportId() {
+		return activityReportId;
 	}
 
 	public Dealer getDealer() {
@@ -50,8 +50,8 @@ public class ActivityReport extends BaseObject {
 		return memo;
 	}
 
-	public void setActivityId(int activityId) {
-		this.activityId = activityId;
+	public void setActivityReportId(int activityId) {
+		this.activityReportId = activityReportId;
 	}
 
 	public void setDealer(Dealer dealer) {
@@ -76,7 +76,7 @@ public class ActivityReport extends BaseObject {
 
 	@Override
 	public String toString() {
-		return String.format("[%d] %-5s %-5s %-5s %-30s %-30s", getActivityId(), getDealer().getName(),
+		return String.format("[%d] %-5s %-5s %-5s %-30s %-30s", getActivityReportId(), getDealer().getName(),
 				getActivityType().name(), getExecutionStatus().name(), getContent(), getMemo());
 	}
 

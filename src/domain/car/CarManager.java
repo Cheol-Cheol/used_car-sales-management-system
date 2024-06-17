@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import domain.common.DummyData;
 import domain.common.Manager;
 import domain.employee.Employee;
 
@@ -12,7 +13,7 @@ public class CarManager implements Manager<Car> {
 	private final List<Car> cars;
 
 	public CarManager() {
-		cars = new ArrayList();
+		cars = new ArrayList(DummyData.initCars());
 	}
 
 	@Override

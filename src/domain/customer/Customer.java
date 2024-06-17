@@ -7,7 +7,7 @@ import domain.common.BaseObject;
 import domain.common.constants.CarType;
 import domain.common.constants.CustomerType;
 import domain.employee.Dealer;
-import domain.sales.Sales;
+import domain.sale.Sale;
 
 // 빌더 패턴 적용 - 심플 빌더 패턴(?) 공부해서 다시 적용해보기 
 // toString - 형식 바꿔야댐
@@ -17,8 +17,8 @@ public class Customer extends BaseObject {
 
 	private int customerId;
 	private Dealer myDealer; // ㅍ
-	private List<Sales> mySales; // ㅍ
-	private CarType carInterests; // ㅍ
+	private List<Sale> mySales; // ㅍ
+	private String carInterests; // ㅍ
 	private CustomerType customerType; // ㅍ // 개인 or 법인
 	private String name; // ㅍ
 	private String email; // ㅅ
@@ -27,13 +27,29 @@ public class Customer extends BaseObject {
 	private String job; // ㅅ
 	private int age; // ㅅ
 
-	public Customer(Dealer myDealer, CarType carInterests, CustomerType customerType, String name, String email,
+	public Customer(Dealer myDealer, String carInterests, CustomerType customerType, String name, String email,
 			String tel, String addr, String job, int age) {
 
 		customerId = customerUID++;
 		mySales = new ArrayList();
 
 		this.myDealer = myDealer;
+		this.carInterests = carInterests;
+		this.customerType = customerType;
+		this.name = name;
+		this.email = email;
+		this.tel = tel;
+		this.addr = addr;
+		this.job = job;
+		this.age = age;
+	}
+
+	public Customer(String carInterests, CustomerType customerType, String name, String email, String tel, String addr,
+			String job, int age) {
+
+		customerId = customerUID++;
+		mySales = new ArrayList();
+
 		this.carInterests = carInterests;
 		this.customerType = customerType;
 		this.name = name;
@@ -52,11 +68,11 @@ public class Customer extends BaseObject {
 		return myDealer;
 	}
 
-	public List<Sales> getMySales() {
+	public List<Sale> getMySales() {
 		return mySales;
 	}
 
-	public CarType getCarInterests() {
+	public String getCarInterests() {
 		return carInterests;
 	}
 
@@ -96,11 +112,11 @@ public class Customer extends BaseObject {
 		this.myDealer = myDealer;
 	}
 
-	public void setMySales(List<Sales> mySales) {
+	public void setMySales(List<Sale> mySales) {
 		this.mySales = mySales;
 	}
 
-	public void setCarInterests(CarType carInterests) {
+	public void setCarInterests(String carInterests) {
 		this.carInterests = carInterests;
 	}
 

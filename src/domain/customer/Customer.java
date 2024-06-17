@@ -9,23 +9,21 @@ import domain.common.constants.CustomerType;
 import domain.employee.Dealer;
 import domain.sale.Sale;
 
-// 빌더 패턴 적용 - 심플 빌더 패턴(?) 공부해서 다시 적용해보기 
-// toString - 형식 바꿔야댐
 public class Customer extends BaseObject {
 
 	private static int customerUID = 1;
 
 	private int customerId;
-	private Dealer myDealer; // ㅍ
-	private List<Sale> mySales; // ㅍ
-	private String carInterests; // ㅍ
-	private CustomerType customerType; // ㅍ // 개인 or 법인
-	private String name; // ㅍ
-	private String email; // ㅅ
-	private String tel; // ㅍ
-	private String addr; // ㅍ
-	private String job; // ㅅ
-	private int age; // ㅅ
+	private Dealer myDealer;
+	private List<Sale> mySales;
+	private String carInterests;
+	private CustomerType customerType;
+	private String name;
+	private String email;
+	private String tel;
+	private String addr;
+	private String job;
+	private int age;
 
 	public Customer(Dealer myDealer, String carInterests, CustomerType customerType, String name, String email,
 			String tel, String addr, String job, int age) {
@@ -148,11 +146,21 @@ public class Customer extends BaseObject {
 		this.age = age;
 	}
 
-	@Override
-	public String toString() {
-		return "Customer [customerId=" + customerId + ", myDealer=" + myDealer + ", carInterests=" + carInterests
-				+ ", customerType=" + customerType + ", name=" + name + ", email=" + email + ", tel=" + tel + ", addr="
-				+ addr + ", job=" + job + ", age=" + age + "]";
+	public void printInfo() {
+		System.out.println("id: " + "[" + getCustomerId() + "]");
+		System.out.println("고객명: " + getName());
+		System.out.println("담당직원명: " + getMyDealer().getName());
+		System.out.println("고객유형: " + getCustomerType().getType());
+		System.out.println("관심차종: " + getCarInterests());
+		System.out.println("판매품위서 개수: " + getMySales().size());
+		System.out.println("이메일: " + getEmail());
+		System.out.println("전화번호: " + getTel());
+		System.out.println("주소: " + getAddr());
+		System.out.println("직업: " + getJob());
+		System.out.println("나이: " + getAge());
+		System.out.println("생성날짜: " + getCreatedAt());
+		System.out.println("수정날짜: " + getUpdatedAt());
+		System.out.println("-----------------------------------------------------------------------------------");
 	}
 
 }

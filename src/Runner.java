@@ -23,7 +23,7 @@ public class Runner {
 		Employee loginUser = login();
 
 		while (true) {
-			System.out.println("[1] 고객 관리     [2] 차량 관리     [3] 판매 관리     [4] 활동 계획 관리     [5] 로그아웃");
+			System.out.println("[1] 고객 관리     [2] 차량 관리     [3] 판매 관리     [4] 활동 계획 관리     [5] 딜러 관리     [6] 로그아웃");
 			System.out.print("[" + loginUser.getRole().getName() + "] >");
 			int cmd = Integer.parseInt(dataInput.readLine());
 
@@ -52,6 +52,13 @@ public class Runner {
 				}
 				break;
 			case 5:
+				if (isAdmin(loginUser)) {
+					employeeManagerByAdmin(loginUser);
+				} else {
+					System.out.println("[서비스 알림] 접근 권한이 없습니다.");
+				}
+				break;
+			case 6:
 				logout();
 				loginUser = login();
 				break;
@@ -67,7 +74,7 @@ public class Runner {
 		int id;
 		Admin loginAdmin = (Admin) loginUser;
 		while (true) {
-			System.out.println("-------------------------[고객 관리]-------------------------");
+			System.out.println("\n#고객 관리");
 			System.out.println("[1] 고객 전체 조회     [2] 고객 상세 조회     [3] 고객 수정     [4] 고객 삭제     [5] 나가기");
 			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 			cmd = Integer.parseInt(dataInput.readLine());
@@ -83,7 +90,7 @@ public class Runner {
 
 				try {
 					Customer customer = totalSolution.getCustomerManager().getItem(id);
-					System.out.println(customer);
+					customer.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -123,7 +130,7 @@ public class Runner {
 		int id;
 		Dealer loginDealer = (Dealer) loginUser;
 		while (true) {
-			System.out.println("-------------------------[고객 관리]-------------------------");
+			System.out.println("\n#고객 관리");
 			System.out.println("[1] 고객 등록     [2] 고객 전체 조회     [3] 고객 상세 조회     [4] 고객 수정     [5] 고객 삭제     [6] 나가기");
 
 			cmd = Integer.parseInt(dataInput.readLine());
@@ -168,7 +175,7 @@ public class Runner {
 
 				try {
 					Customer customer = loginDealer.getItem(id);
-					System.out.println(customer);
+					customer.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -206,7 +213,7 @@ public class Runner {
 		int id;
 		Admin loginAdmin = (Admin) loginUser;
 		while (true) {
-			System.out.println("-------------------------[차량 관리]-------------------------");
+			System.out.println("\n#차량 관리");
 			System.out.println("[1] 차량 등록     [2] 차량 전체 조회     [3] 차량 상세 조회     [4] 차량 수정     [5] 차량 삭제     [6] 나가기");
 			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 			cmd = Integer.parseInt(dataInput.readLine());
@@ -256,7 +263,7 @@ public class Runner {
 
 				try {
 					Car car = totalSolution.getCarManager().getItem(id);
-					System.out.println(car);
+					car.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -295,7 +302,7 @@ public class Runner {
 		int id;
 		Dealer loginDealer = (Dealer) loginUser;
 		while (true) {
-			System.out.println("-------------------------[차량 관리]-------------------------");
+			System.out.println("\n#차량 관리");
 			System.out.println("[1] 차량 전체 조회     [2] 차량 상세 조회    [3] 조건별 차량 조회     [4] 나가기");
 			System.out.print("[" + loginDealer.getRole().getName() + "] >");
 			cmd = Integer.parseInt(dataInput.readLine());
@@ -311,7 +318,7 @@ public class Runner {
 
 				try {
 					Car car = totalSolution.getCarManager().getItem(id);
-					System.out.println(car);
+					car.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -334,7 +341,7 @@ public class Runner {
 		int id;
 		Admin loginAdmin = (Admin) loginUser;
 		while (true) {
-			System.out.println("-------------------------[활동 계획 관리]-------------------------");
+			System.out.println("\n#활동 계획 관리");
 			System.out.println("[1] 활동 계획 전체 조회     [2] 활동 계획 상세 조회     [3] 활동 계획 수정     [4] 활동 계획 삭제     [5] 나가기");
 			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 			cmd = Integer.parseInt(dataInput.readLine());
@@ -350,7 +357,7 @@ public class Runner {
 
 				try {
 					ActivityReport activityReport = totalSolution.getActivityReportManager().getItem(id);
-					System.out.println(activityReport);
+					activityReport.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -389,7 +396,7 @@ public class Runner {
 		int id;
 		Dealer loginDealer = (Dealer) loginUser;
 		while (true) {
-			System.out.println("-------------------------[활동 계획 관리]-------------------------");
+			System.out.println("\n#활동 계획 관리");
 			System.out.println(
 					"[1] 활동 계획 등록     [2] 활동 계획 전체 조회     [3] 활동 계획 상세 조회     [4] 활동 계획 수정     [5] 활동 계획 삭제     [6] 나가기");
 			System.out.print("[" + loginDealer.getRole().getName() + "] >");
@@ -428,7 +435,7 @@ public class Runner {
 
 				try {
 					ActivityReport activityReport = loginDealer.getActivityReportItem(id);
-					System.out.println(activityReport);
+					activityReport.printInfo();
 				} catch (NoSuchElementException e) {
 					System.out.println(e.getMessage());
 				} catch (Exception e) {
@@ -461,13 +468,70 @@ public class Runner {
 		}
 	}
 
+	// 이거 해야됨
+	private static void employeeManagerByAdmin(Employee loginUser) throws NumberFormatException, IOException {
+		DataInput dataInput = DataInput.getInstance();
+
+		int cmd;
+		int id;
+		Admin loginAdmin = (Admin) loginUser;
+		while (true) {
+			System.out.println("\n#딜러 관리");
+			System.out.println(
+					"[1] 딜러 생성     [2] 딜러 전체 조회     [3] 딜러 상세 조회     [4] 딜러 정보 수정     [5] 딜러 정보 삭제     [6] 나가기");
+			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+			cmd = Integer.parseInt(dataInput.readLine());
+
+			switch (cmd) {
+			case 1: // 딜러 생성
+				totalSolution.getActivityReportManager().getList();
+				break;
+			case 2: // 딜러 전체 조회
+				System.out.println("검색할 활동 계획의 id를 입력해주세요.");
+				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+				id = Integer.parseInt(dataInput.readLine());
+
+				try {
+					ActivityReport activityReport = totalSolution.getActivityReportManager().getItem(id);
+					activityReport.printInfo();
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 3: // 딜러 상세 조회
+				System.out.println("수정할 활동 계획의 id를 입력해주세요.");
+				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+				id = Integer.parseInt(dataInput.readLine());
+
+				break;
+			case 4: // 딜러 정보 수정
+				System.out.println("삭제할 활동 계획의 id를 입력해주세요.");
+				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+				id = Integer.parseInt(dataInput.readLine());
+
+				try {
+					totalSolution.getActivityReportManager().deleteItem(id);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 5: // 딜러 정보 삭제
+				return;
+			}
+		}
+	}
+
 	private static Employee login() throws NumberFormatException, IOException {
 		DataInput dataInput = DataInput.getInstance();
 
-		System.out.println("로그인할 id와 이름을 입력해주세요.");
-		System.out.print("id >");
+		System.out.println("[로그인] id와 이름을 입력해주세요.");
+		System.out.print("[id] >");
 		int id = Integer.parseInt(dataInput.readLine());
-		System.out.print("이름 >");
+		System.out.print("[이름] >");
 		String name = dataInput.readLine();
 
 		Employee loginUser = null;

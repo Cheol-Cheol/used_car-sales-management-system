@@ -85,10 +85,17 @@ public class ActivityReport extends BaseObject {
 		this.memo = memo;
 	}
 
-	@Override
-	public String toString() {
-		return String.format("[%d] %-5s %-5s %-5s %-30s %-30s", getActivityReportId(), getDealer().getName(),
-				getActivityType().name(), getExecutionStatus().name(), getContent(), getMemo());
+	public void printInfo() {
+		System.out.println("id: " + "[" + getActivityReportId() + "]");
+		System.out.println("활동일자: " + getCreatedAt());
+		System.out.println("직원명: " + getDealer().getName());
+		System.out.println("고객명: " + getCustomer().getName());
+		System.out.println("활동형태: " + getActivityType().getType());
+		System.out.println("활동내용: " + getContent());
+		System.out.println("계획메모: " + getMemo());
+		System.out.println("수정일자: " + getUpdatedAt());
+		System.out.println("실행여부: " + getExecutionStatus().getName());
+		System.out.println("-----------------------------------------------------------------------------------");
 	}
 
 }

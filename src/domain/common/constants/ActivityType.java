@@ -2,7 +2,7 @@ package domain.common.constants;
 
 public enum ActivityType {
 
-	CALL("전화"), VISIT("방문"), EMPTY("");
+	CALL("전화"), VISIT("방문"), EMPTY("미정");
 
 	private final String type;
 

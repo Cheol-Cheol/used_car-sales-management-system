@@ -22,7 +22,7 @@ public class ActivityReportManager implements Manager<ActivityReport> {
 
 	@Override
 	public void getList() {
-		activityReports.stream().forEach(System.out::println);
+		activityReports.stream().forEach(ActivityReport::printInfo);
 	}
 
 	@Override

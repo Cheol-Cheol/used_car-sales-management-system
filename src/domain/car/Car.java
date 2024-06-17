@@ -1,10 +1,11 @@
 package domain.car;
 
+import domain.common.BaseObject;
 import domain.common.constants.CarColor;
 import domain.common.constants.CarType;
 import domain.common.constants.PurchaseStatus;
 
-public class Car {
+public class Car extends BaseObject {
 
 	private static int carUID = 1;
 
@@ -75,6 +76,10 @@ public class Car {
 		return accidentStatus;
 	}
 
+	public String getAccidentStatus() {
+		return accidentStatus ? "예" : "아니오";
+	}
+
 	public void setCarId(int carId) {
 		this.carId = carId;
 	}
@@ -115,11 +120,19 @@ public class Car {
 		this.accidentStatus = accidentStatus;
 	}
 
-	@Override
-	public String toString() {
-		return "Car [carId=" + carId + ", brand=" + brand + ", model=" + model + ", carColor=" + carColor
-				+ ", purchaseStatus=" + purchaseStatus + ", carNum=" + carNum + ", price=" + price + ", distance="
-				+ distance + ", birth=" + birth + ", accidentStatus=" + accidentStatus + "]";
+	public void printInfo() {
+		System.out.println("id: " + "[" + getCarId() + "]");
+		System.out.println("브랜드: " + getBrand());
+		System.out.println("모델: " + getModel());
+		System.out.println("색상: " + getCarColor().getName());
+		System.out.println("계약유무: " + getPurchaseStatus().getName());
+		System.out.println("차량번호: " + getCarNum());
+		System.out.println("가격: " + getPrice());
+		System.out.println("주행거리: " + getDistance());
+		System.out.println("연식: " + getBirth());
+		System.out.println("사고유무: " + getAccidentStatus());
+		System.out.println("생성일자: " + getCreatedAt());
+		System.out.println("-----------------------------------------------------------------------------------");
 	}
-
+	
 }

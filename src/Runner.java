@@ -4,12 +4,15 @@ import java.util.NoSuchElementException;
 import domain.activityReport.ActivityReport;
 import domain.car.Car;
 import domain.common.constants.CarColor;
+import domain.common.constants.ConfirmStatus;
 import domain.common.constants.CustomerType;
+import domain.common.constants.InterestRate;
 import domain.common.constants.Role;
 import domain.customer.Customer;
 import domain.employee.Admin;
 import domain.employee.Dealer;
 import domain.employee.Employee;
+import domain.sale.Sale;
 import utils.DataInput;
 
 public class Runner {
@@ -43,6 +46,11 @@ public class Runner {
 				}
 				break;
 			case 3:
+				if (isAdmin(loginUser)) {
+					saleManagerByAdmin(loginUser);
+				} else {
+					saleManagerByDealer(loginUser);
+				}
 				break;
 			case 4:
 				if (isAdmin(loginUser)) {
@@ -466,6 +474,323 @@ public class Runner {
 				return;
 			}
 		}
+	}
+
+	public static void saleManagerByAdmin(Employee loginUser) throws NumberFormatException, IOException {
+		DataInput dataInput = DataInput.getInstance();
+
+		int cmd;
+		int contractNum;
+		Admin loginAdmin = (Admin) loginUser;
+		while (true) {
+			System.out.println("#판매 관리");
+			System.out.println(
+					"[1] 판매품의서 전체 조회     [2] 판매품의서 상세 조회     [3] 판매품의서 수정     [4] 판매품의서 삭제     [5] 결재승인     [6] 나가기");
+			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+			cmd = Integer.parseInt(dataInput.readLine());
+
+			switch (cmd) {
+			case 1:
+				try {
+					totalSolution.getSaleManager().getList();
+				} catch (Exception e) {
+					System.out.println("판매품의서를 조회할 수 없습니다.");
+				}
+				break;
+			case 2:
+				System.out.println("검색할 고객의 판매품의서 계약번호를 입력해주세요.");
+				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+				contractNum = Integer.parseInt(dataInput.readLine());
+				// try
+				Sale sale = totalSolution.getSaleManager().getItem(contractNum);
+				sale.printInfo();
+				break;
+			case 3:
+				try {
+					System.out.println("수정할 고객의 판매품의서 계약번호를 입력해주세요.");
+					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+					contractNum = Integer.parseInt(dataInput.readLine());
+					Sale sale1 = totalSolution.getSaleManager().getItem(contractNum);
+					sale1.printInfo();
+
+					System.out.println("수정하고 싶은 내용의 번호를 입력해주세요.");
+					System.out.println("[1] 계약번호     [2] 고객 이름     [3] 계좌번호     [4]뒤로가기");
+					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+					int cmd2 = Integer.parseInt(dataInput.readLine());
+
+					switch (cmd2) {
+					case 1:
+						System.out.println("수정 전 계약번호 : " + sale1.getContractNum());
+						System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+						int cmd3 = Integer.parseInt(dataInput.readLine());
+						sale1.setContractNum(cmd3);
+						System.out.println("수정 후 계약번호 : " + sale1.getContractNum());
+						break;
+					case 2:
+						System.out.println("수정 전 고객 이름: " + loginAdmin.getName());
+						System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+						String cmd4 = dataInput.readLine();
+						sale1.getCustomer().setName(cmd4);
+						System.out.println("수정 후 고객 이름 : " + sale1.getCustomer().getName());
+						break;
+					case 3:
+						System.out.println("수정 전 계좌번호: " + sale1.getAccountNum());
+						System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+						String cmd5 = dataInput.readLine();
+						sale1.setAccountNum(cmd5);
+						System.out.println("수정 후 계좌번호 : " + sale1.getAccountNum());
+						break;
+					case 4:
+						return;
+					}
+				} catch (Exception e) {
+					System.out.println("입력하신 계약번호가 없습니다. 다시 입력해주세요.");
+				}
+				break;
+			case 4:
+				System.out.println("삭제할 고객의 판매품의서 계약번호를 입력해주세요.");
+				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+				contractNum = Integer.parseInt(dataInput.readLine());
+
+				try {
+					totalSolution.getSaleManager().deleteItem(contractNum);
+					System.out.println("삭제되었습니다.");
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 5:
+				System.out.println("결재 승인할 고객의 판매품의서 계약번호를 입력해주세요.");
+				try {
+					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+					contractNum = Integer.parseInt(dataInput.readLine());
+					Sale sale1 = totalSolution.getSaleManager().getItem(contractNum);
+					System.out.println("선약금 입금 확인: " + sale1.isAdvanceDeposit());
+					System.out.println("예약금 입금 확인: " + sale1.isGetDeposit());
+
+					System.out.println("[1] 결재 대기     [2] 결재가능     [3] 결재완료");
+					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
+					int cmd1 = Integer.parseInt(dataInput.readLine());
+					switch (cmd1) {
+					case 1:
+						if (totalSolution.getSaleManager().getItem(contractNum).getAdvanceDeposit() == totalSolution
+								.getSaleManager().getItem(contractNum).getCar().getPrice() * 0.2) {
+							sale1.setConfirmStatus(ConfirmStatus.WAIT);
+							System.out.println("결재대기 상태가 완료되었습니다. 확인 후에 결재가능 상태로 업데이트 해주세요.");
+						} else {
+							System.out.println("선약금의 금액이 잘못 입력되었습니다. 다시 확인해주세요.");
+							break;
+						}
+						break;
+					case 2:
+						sale1.setConfirmStatus(ConfirmStatus.WAIT);
+						System.out.println("결재가능 상태가 완료되었습니다.");
+						break;
+					case 3:
+						if (totalSolution.getSaleManager().getItem(contractNum).getOriginalPrice() == totalSolution
+								.getSaleManager().getItem(contractNum).getCar().getPrice()) {
+							sale1.setConfirmStatus(ConfirmStatus.COMPLETE);
+							System.out.println("결재완료 상태가 완료되었습니다.");
+						}
+						totalSolution.getCarManager().deleteItem(contractNum);
+
+						Thread.sleep(1000);
+						System.out.println("차량이 출고 되었습니다.");
+						System.out.println();
+						break;
+					}
+				} catch (Exception e) {
+					System.out.println("없는 계좌번호입니다.");
+				}
+				break;
+			case 6:
+				return;
+			}
+		}
+
+	}
+
+	public static void saleManagerByDealer(Employee loginUser) throws NumberFormatException, IOException {
+		DataInput dataInput = DataInput.getInstance();
+
+		int cmd;
+		int contractNum;
+		boolean isRental = false;
+		Dealer loginDealer = (Dealer) loginUser;
+		while (true) {
+			System.out.println("#판매 관리");
+			System.out.println(
+					"[1] 판매품의서 생성     [2] 판매품의서 전체 조회     [3] 판매품의서 상세 조회     [4] 판매품의서 수정     [5] 판매품의서 삭제     [6]나가기");
+			System.out.print("[" + loginDealer.getRole().getName() + "] >");
+			cmd = Integer.parseInt(dataInput.readLine());
+
+			switch (cmd) {
+			case 1:
+				Customer c1 = null;
+				Car car = null;
+				int carId = 0;
+
+				try {
+					System.out.println("고객 id를 입력해주세요.");
+					System.out.print("[" + loginDealer.getRole().getName() + "] >");
+					int id = Integer.parseInt(dataInput.readLine());
+					c1 = totalSolution.getCustomerManager().getItem(id);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+
+				try {
+					System.out.println("고객이 계약하고자 하는 차의 id를 입력해주세요.");
+					System.out.print("[" + loginDealer.getRole().getName() + "] >");
+					carId = Integer.parseInt(dataInput.readLine());
+					car = totalSolution.getCarManager().getItem(carId);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+
+				System.out.println("고객의 은행명을 입력해주세요.");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				String bankName = dataInput.readLine();
+
+				System.out.println("고객의 예금주명을 입력해주세요.");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				String accountName = dataInput.readLine();
+
+				System.out.println("고객의 계좌번호를 입력해주세요.");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				String accountNum = dataInput.readLine();
+
+				Sale newSale = new Sale(loginDealer, c1, car, bankName, accountName, accountNum, isRental);
+				totalSolution.getSaleManager().addItem(newSale);
+
+				System.out.println("[1] 렌탈     [2] 구매");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				int choose = Integer.parseInt(dataInput.readLine());
+				if (choose == 1) {
+					isRental = true;
+					System.out.println("렌탈 기간을 선택해주세요.");
+					System.out.println("[1] 3개월미만     [2] 3개월 이상 6개월미만     [3] 1년     [4] 1년이상     [5] 뒤로가기");
+					System.out.print("[" + loginDealer.getRole().getName() + "] >");
+					int rentalNum = Integer.parseInt(dataInput.readLine());
+
+					switch (rentalNum) {
+					case 1:
+						newSale.setInterestRate(InterestRate.THREEMONTH);
+						break;
+					case 2:
+						newSale.setInterestRate(InterestRate.SIXMONTH);
+						break;
+					case 3:
+						newSale.setInterestRate(InterestRate.ONEYEAR);
+						break;
+					case 4:
+						newSale.setInterestRate(InterestRate.OVERONEYEAR);
+						break;
+					case 5:
+						return;
+					}
+				} else if (choose == 2) {
+					isRental = false;
+					try {
+						Thread.sleep(15000); // 15초 재우기
+						newSale.setAdvanceDeposit((int) (car.getPrice() * 0.2));
+						newSale.setAdvanceDeposit(true); // 15초 뒤에 선약금 들어감
+
+						Thread.sleep(15000);
+						newSale.setAdvanceDeposit((int) (car.getPrice() * 0.8));
+						newSale.setGetDeposit(true);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+
+				loginDealer.getMySales().add(newSale);
+				c1.getMySales().add(newSale);
+				break;
+
+			case 2:
+				try {
+					System.out.println("판매품의서를 전체 조회합니다.");
+					totalSolution.getSaleManager().getList();
+				} catch (Exception e) {
+					System.out.println("판매품의서를 조회할 수 없습니다.");
+				}
+				break;
+			case 3:
+				System.out.println("검색할 고객의 판매품의서 계약번호를 입력해주세요.");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				contractNum = Integer.parseInt(dataInput.readLine());
+				// try
+				Sale sale = totalSolution.getSaleManager().getItem(contractNum);
+				sale.printInfo();
+				break;
+			case 4:
+				try {
+					System.out.println("수정할 고객의 판매품의서 계약번호를 입력해주세요.");
+					System.out.print("[" + loginDealer.getRole().getName() + "] >");
+					contractNum = Integer.parseInt(dataInput.readLine());
+					Sale sale1 = totalSolution.getSaleManager().getItem(contractNum);
+					sale1.printInfo();
+
+					System.out.println("수정하고 싶은 내용의 번호를 입력해주세요.");
+					System.out.println("[1] 계약번호     [2] 고객 이름     [3] 계좌번호     [4]뒤로가기");
+					System.out.print("[" + loginDealer.getRole().getName() + "] >");
+					int cmd2 = Integer.parseInt(dataInput.readLine());
+
+					switch (cmd2) {
+					case 1:
+						System.out.println("수정 전 계약번호 : " + sale1.getContractNum());
+						System.out.print("[" + loginDealer.getRole().getName() + "] >");
+						int cmd3 = Integer.parseInt(dataInput.readLine());
+						sale1.setContractNum(cmd3);
+						System.out.println("수정 후 계약번호 : " + sale1.getContractNum());
+						break;
+					case 2:
+						System.out.println("수정 전 고객 이름: " + loginDealer.getName());
+						System.out.print("[" + loginDealer.getRole().getName() + "] >");
+						String cmd4 = dataInput.readLine();
+						sale1.getCustomer().setName(cmd4);
+						System.out.println("수정 후 고객 이름 : " + sale1.getCustomer().getName());
+						break;
+					case 3:
+						System.out.println("수정 전 계좌번호: " + sale1.getAccountNum());
+						System.out.print("[" + loginDealer.getRole().getName() + "] >");
+						String cmd5 = dataInput.readLine();
+						sale1.setAccountNum(cmd5);
+						System.out.println("수정 후 계좌번호 : " + sale1.getAccountNum());
+						break;
+					case 4:
+						return;
+					}
+				} catch (Exception e) {
+					System.out.println("입력하신 계약번호가 없습니다. 다시 입력해주세요.");
+				}
+				break;
+			case 5:
+				System.out.println("삭제할 고객의 판매품의서 계약번호를 입력해주세요.");
+				System.out.print("[" + loginDealer.getRole().getName() + "] >");
+				contractNum = Integer.parseInt(dataInput.readLine());
+
+				try {
+					totalSolution.getSaleManager().deleteItem(contractNum);
+					System.out.println("삭제되었습니다.");
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
+				break;
+			case 6:
+				return;
+			}
+		}
+
 	}
 
 	// 이거 해야됨

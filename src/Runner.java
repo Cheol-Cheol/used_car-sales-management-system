@@ -28,13 +28,21 @@ public class Runner {
 
 			switch (cmd) {
 			case 1:
-				if (isAdmin(loginUser)) {
+				if (isAdmin(loginUser) && loginUser instanceof Admin) {
+					System.out.println("어드민");
 					customerManagerByAdmin(loginUser);
-				} else {
-					customerManagerByDealer(loginUser);
 				}
+//				else {
+//					customerManagerByDealer(loginUser);
+//				}
 				break;
 			case 2:
+//				if (isAdmin(loginUser)) {
+//					carManagerByAdmin(loginUser);
+//				} else {
+//					carManagerByDealer(loginUser);
+//				}
+				break;
 			case 3:
 			case 4:
 
@@ -98,7 +106,8 @@ public class Runner {
 
 		int cmd;
 		int id;
-		Dealer loginDealer = (Dealer) loginUser;
+		Employee loginEmp = loginUser;
+		Dealer loginDealer = (Dealer) loginEmp;
 		while (true) {
 			System.out.println("-------------------------[고객 관리]-------------------------");
 			System.out.println("[1] 고객 등록     [2] 고객 전체 조회     [3] 고객 상세 조회     [4] 고객 수정     [5] 고객 삭제     [6] 나가기");
@@ -162,6 +171,10 @@ public class Runner {
 		}
 	}
 
+	private static void carManagerByAdmin(Employee loginUser) throws NumberFormatException, IOException {
+
+	}
+
 	private static Employee login() throws NumberFormatException, IOException {
 		DataInput dataInput = DataInput.getInstance();
 
@@ -190,7 +203,7 @@ public class Runner {
 	}
 
 	private static boolean isAdmin(Employee loginUser) {
-		return loginUser.getRole().getName().equals(Role.ADMIN.name());
+		return loginUser.getRole().name().equals(Role.ADMIN.name());
 	}
 
 }

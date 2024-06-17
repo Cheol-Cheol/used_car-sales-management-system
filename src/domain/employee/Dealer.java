@@ -41,6 +41,7 @@ public class Dealer extends Employee {
 		// 유효성 검사
 		Customer customer = new Customer(carInterests, customerType, name, email, tel, addr, job, age);
 		customer.setMyDealer(this);
+		myCustomers.add(customer);
 		return customer;
 	}
 

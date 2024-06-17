@@ -18,34 +18,40 @@ public class Runner {
 		DataInput dataInput = DataInput.getInstance();
 
 		// 로그인
-		Employee loginUser = login();
+		Employee loginUser = null;
+		while (loginUser == null) {
+			loginUser = login();
+		}
 
 		while (true) {
 			// 안내창
-			System.out.println("[1] 고객 관리     [2] 차량 관리     [3] 판매 관리     [4] 활동 관리");
+			System.out.println("[1] 고객 관리     [2] 차량 관리     [3] 판매 관리     [4] 활동 관리     [5] 로그아웃");
 			System.out.print("[" + loginUser.getRole().getName() + "] >");
 			int cmd = Integer.parseInt(dataInput.readLine());
 
 			switch (cmd) {
 			case 1:
-				if (isAdmin(loginUser) && loginUser instanceof Admin) {
-					System.out.println("어드민");
+				if (isAdmin(loginUser)) {
 					customerManagerByAdmin(loginUser);
+				} else {
+					customerManagerByDealer(loginUser);
 				}
-//				else {
-//					customerManagerByDealer(loginUser);
-//				}
 				break;
 			case 2:
-//				if (isAdmin(loginUser)) {
-//					carManagerByAdmin(loginUser);
-//				} else {
-//					carManagerByDealer(loginUser);
-//				}
+				if (isAdmin(loginUser)) {
+					carManagerByAdmin(loginUser);
+				} else {
+					carManagerByDealer(loginUser);
+				}
 				break;
 			case 3:
+				break;
 			case 4:
-
+				break;
+			case 5:
+				logout();
+				login();
+				break;
 			}
 		}
 
@@ -61,8 +67,9 @@ public class Runner {
 		while (true) {
 			System.out.println("-------------------------[고객 관리]-------------------------");
 			System.out.println("[1] 고객 전체 조회     [2] 고객 상세 조회     [3] 고객 수정     [4] 고객 삭제     [5] 나가기");
-
+			System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 			cmd = Integer.parseInt(dataInput.readLine());
+
 			switch (cmd) {
 			case 1:
 				totalSolution.getCustomerManager().getList();
@@ -71,9 +78,15 @@ public class Runner {
 				System.out.println("검색할 고객의 id를 입력해주세요.");
 				System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 				id = Integer.parseInt(dataInput.readLine());
-				// try
-				Customer customer = totalSolution.getCustomerManager().getItem(id);
-				System.out.println(customer);
+
+				try {
+					Customer customer = totalSolution.getCustomerManager().getItem(id);
+					System.out.println(customer);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 3:
 				System.out.println("수정할 고객의 id를 입력해주세요.");
@@ -106,8 +119,7 @@ public class Runner {
 
 		int cmd;
 		int id;
-		Employee loginEmp = loginUser;
-		Dealer loginDealer = (Dealer) loginEmp;
+		Dealer loginDealer = (Dealer) loginUser;
 		while (true) {
 			System.out.println("-------------------------[고객 관리]-------------------------");
 			System.out.println("[1] 고객 등록     [2] 고객 전체 조회     [3] 고객 상세 조회     [4] 고객 수정     [5] 고객 삭제     [6] 나가기");
@@ -151,8 +163,15 @@ public class Runner {
 				System.out.println("검색할 고객의 id를 입력해주세요.");
 				System.out.print("[" + loginDealer.getRole().getName() + "] >");
 				id = Integer.parseInt(dataInput.readLine());
-				Customer customer = loginDealer.getItem(id);
-				System.out.println(customer);
+
+				try {
+					Customer customer = loginDealer.getItem(id);
+					System.out.println(customer);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 4:
 				// 수정
@@ -161,8 +180,15 @@ public class Runner {
 				System.out.println("삭제할 고객의 id를 입력해주세요.");
 				System.out.print("[" + loginDealer.getRole().getName() + "] >");
 				id = Integer.parseInt(dataInput.readLine());
-				loginDealer.deleteItem(id);
-				totalSolution.getCustomerManager().deleteItem(id);
+
+				try {
+					loginDealer.deleteItem(id);
+					totalSolution.getCustomerManager().deleteItem(id);
+				} catch (NoSuchElementException e) {
+					System.out.println(e.getMessage());
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+				}
 				break;
 			case 6:
 				return;
@@ -172,6 +198,10 @@ public class Runner {
 	}
 
 	private static void carManagerByAdmin(Employee loginUser) throws NumberFormatException, IOException {
+
+	}
+
+	private static void carManagerByDealer(Employee loginUser) throws NumberFormatException, IOException {
 
 	}
 
@@ -203,7 +233,7 @@ public class Runner {
 	}
 
 	private static boolean isAdmin(Employee loginUser) {
-		return loginUser.getRole().name().equals(Role.ADMIN.name());
+		return loginUser.getRole() == Role.ADMIN;
 	}
 
 }

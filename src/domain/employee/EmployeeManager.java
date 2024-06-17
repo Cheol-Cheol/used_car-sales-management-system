@@ -27,8 +27,9 @@ public class EmployeeManager implements Manager<Employee> {
 	}
 
 	@Override
-	public Optional<Employee> getItem(int id) {
-		return employees.stream().filter(el -> el.getEmpId() == id).findFirst();
+	public Employee getItem(int id) {
+		return employees.stream().filter(el -> el.getEmpId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 	}
 
 	@Override

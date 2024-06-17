@@ -25,6 +25,10 @@ public class TotalSolution {
 		activityReportManager = new ActivityReportManager();
 	}
 
+	public Employee getLoginUser() {
+		return loginUser;
+	}
+
 	public EmployeeManager getEmployeeManager() {
 		return employeeManager;
 	}
@@ -45,9 +49,8 @@ public class TotalSolution {
 		return activityReportManager;
 	}
 
-	public void login(int id, String name) throws Exception {
-		Employee employee = getEmployeeManager().getItem(id)
-				.orElseThrow(() -> new NoSuchElementException("[서비스 알림] 일치하는 id를 찾지 못함"));
+	public Employee login(int id, String name) throws Exception {
+		Employee employee = getEmployeeManager().getItem(id);
 
 		if (employee.getName().equals(name.trim())) {
 			loginUser = employee;
@@ -55,6 +58,8 @@ public class TotalSolution {
 		} else {
 			throw new IllegalArgumentException("[서비스 알림] 로그인 실패");
 		}
+
+		return loginUser;
 	}
 
 	public void logout() {

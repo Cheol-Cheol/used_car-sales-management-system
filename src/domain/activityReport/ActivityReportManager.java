@@ -26,8 +26,9 @@ public class ActivityReportManager implements Manager<ActivityReport> {
 	}
 
 	@Override
-	public Optional<ActivityReport> getItem(int id) {
-		return activityReports.stream().filter(el -> el.getActivityReportId() == id).findFirst();
+	public ActivityReport getItem(int id) {
+		return activityReports.stream().filter(el -> el.getActivityReportId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 	}
 
 	@Override

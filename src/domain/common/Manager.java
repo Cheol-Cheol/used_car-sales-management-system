@@ -8,7 +8,7 @@ public interface Manager<T> {
 
 	public void getList();
 
-	public Optional<T> getItem(int id);
+	public T getItem(int id);
 
 	public void deleteItem(int id);
 

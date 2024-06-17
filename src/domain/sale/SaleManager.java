@@ -26,8 +26,9 @@ public class SaleManager implements Manager<Sale> {
 	}
 
 	@Override
-	public Optional<Sale> getItem(int id) {
-		return sales.stream().filter(el -> el.getSalesId() == id).findFirst();
+	public Sale getItem(int id) {
+		return sales.stream().filter(el -> el.getSalesId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 	}
 
 	@Override

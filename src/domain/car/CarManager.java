@@ -27,8 +27,9 @@ public class CarManager implements Manager<Car> {
 	}
 
 	@Override
-	public Optional<Car> getItem(int id) {
-		return cars.stream().filter(el -> el.getCarId() == id).findFirst();
+	public Car getItem(int id) {
+		return cars.stream().filter(el -> el.getCarId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 	}
 
 	@Override

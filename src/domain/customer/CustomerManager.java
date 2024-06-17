@@ -27,8 +27,9 @@ public class CustomerManager implements Manager<Customer> {
 	}
 
 	@Override
-	public Optional<Customer> getItem(int id) {
-		return customers.stream().filter(el -> el.getCustomerId() == id).findFirst();
+	public Customer getItem(int id) {
+		return customers.stream().filter(el -> el.getCustomerId() == id).findFirst()
+				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 	}
 
 	@Override
@@ -36,6 +37,10 @@ public class CustomerManager implements Manager<Customer> {
 		Customer customer = customers.stream().filter(el -> el.getCustomerId() == id).findFirst()
 				.orElseThrow(() -> new NoSuchElementException("존재하지 않는 Id입니다."));
 		customers.remove(customer);
+	}
+
+	public List<Customer> getCustomers() {
+		return customers;
 	}
 
 }

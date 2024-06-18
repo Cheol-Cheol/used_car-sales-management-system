@@ -2,7 +2,6 @@ package domain.car;
 
 import domain.common.BaseObject;
 import domain.common.constants.CarColor;
-import domain.common.constants.CarType;
 import domain.common.constants.PurchaseStatus;
 
 public class Car extends BaseObject {
@@ -134,5 +133,5 @@ public class Car extends BaseObject {
 		System.out.println("생성일자: " + getCreatedAt());
 		System.out.println("-----------------------------------------------------------------------------------");
 	}
-	
+
 }

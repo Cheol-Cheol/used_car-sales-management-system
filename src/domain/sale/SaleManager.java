@@ -24,7 +24,7 @@ public class SaleManager implements Manager<Sale> {
 	// 판매품의서 전체조회
 	@Override
 	public void getList() {
-		sales.stream().forEach(Sale::printInfo);
+		sales.stream().forEach(el -> el.printInfo());
 	}
 
 	// 판매품의서 상세조회

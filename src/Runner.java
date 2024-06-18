@@ -527,7 +527,7 @@ public class Runner {
 						System.out.println("수정 후 계약번호 : " + sale1.getContractNum());
 						break;
 					case 2:
-						System.out.println("수정 전 고객 이름: " + loginAdmin.getName());
+						System.out.println("수정 전 고객 이름: " + sale1.getCustomer().getName());
 						System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 						String cmd4 = dataInput.readLine();
 						sale1.getCustomer().setName(cmd4);
@@ -567,36 +567,39 @@ public class Runner {
 					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 					contractNum = Integer.parseInt(dataInput.readLine());
 					Sale sale1 = totalSolution.getSaleManager().getItem(contractNum);
+					System.out.println("고객정보 ");
+					System.out.println("딜러명: " + sale1.getDealer().getName());
+					System.out.println("고객명: " + sale1.getCustomer().getName());
+					System.out.println("원금: " + sale1.getOriginalPrice());
 					System.out.println("선약금 입금 확인: " + sale1.isAdvanceDeposit());
-					System.out.println("예약금 입금 확인: " + sale1.isGetDeposit());
+					System.out.println("인도금 입금 확인: " + sale1.isGetDeposit());
 
 					System.out.println("[1] 결재 대기     [2] 결재가능     [3] 결재완료");
 					System.out.print("[" + loginAdmin.getRole().getName() + "] >");
 					int cmd1 = Integer.parseInt(dataInput.readLine());
 					switch (cmd1) {
 					case 1:
-						if (totalSolution.getSaleManager().getItem(contractNum).getAdvanceDeposit() == totalSolution
-								.getSaleManager().getItem(contractNum).getCar().getPrice() * 0.2) {
-							sale1.setConfirmStatus(ConfirmStatus.WAIT);
-							System.out.println("결재대기 상태가 완료되었습니다. 확인 후에 결재가능 상태로 업데이트 해주세요.");
-						} else {
-							System.out.println("선약금의 금액이 잘못 입력되었습니다. 다시 확인해주세요.");
-							break;
-						}
+						System.out.println("결재 대기 상태가 완료되었습니다.");
 						break;
 					case 2:
-						sale1.setConfirmStatus(ConfirmStatus.WAIT);
-						System.out.println("결재가능 상태가 완료되었습니다.");
+						if ((totalSolution.getSaleManager().getItem(contractNum)).isAdvanceDeposit().equals("예")) {
+							sale1.setConfirmStatus(ConfirmStatus.WAIT);
+							System.out.println("결재가능 상태가 완료되었습니다.");
+							sale1.DepositStep2();
+						} else {
+							System.out.println("선약금이 들어오지 않았습니다.");
+						}
 						break;
 					case 3:
-						if (totalSolution.getSaleManager().getItem(contractNum).getOriginalPrice() == totalSolution
-								.getSaleManager().getItem(contractNum).getCar().getPrice()) {
+						if ((totalSolution.getSaleManager().getItem(contractNum)).isGetDeposit().equals("예")) {
 							sale1.setConfirmStatus(ConfirmStatus.COMPLETE);
 							System.out.println("결재완료 상태가 완료되었습니다.");
+						} else {
+							System.out.println("인도금이 들어오지 않았습니다.");
 						}
 						totalSolution.getCarManager().deleteItem(contractNum);
 
-						Thread.sleep(1000);
+						Thread.sleep(3000);
 						System.out.println("차량이 출고 되었습니다.");
 						System.out.println();
 						break;
@@ -673,7 +676,7 @@ public class Runner {
 				System.out.print("[" + loginDealer.getRole().getName() + "] >");
 				int choose = Integer.parseInt(dataInput.readLine());
 				if (choose == 1) {
-					isRental = true;
+					newSale.setRental(true);
 					System.out.println("렌탈 기간을 선택해주세요.");
 					System.out.println("[1] 3개월미만     [2] 3개월 이상 6개월미만     [3] 1년     [4] 1년이상     [5] 뒤로가기");
 					System.out.print("[" + loginDealer.getRole().getName() + "] >");
@@ -682,36 +685,37 @@ public class Runner {
 					switch (rentalNum) {
 					case 1:
 						newSale.setInterestRate(InterestRate.THREEMONTH);
+						newSale.seteInterestRate(InterestRate.THREEMONTH);
+						newSale.rentalDepositStep();
 						break;
 					case 2:
 						newSale.setInterestRate(InterestRate.SIXMONTH);
+						newSale.seteInterestRate(InterestRate.SIXMONTH);
+						newSale.rentalDepositStep();
 						break;
 					case 3:
 						newSale.setInterestRate(InterestRate.ONEYEAR);
+						newSale.seteInterestRate(InterestRate.ONEYEAR);
+						newSale.rentalDepositStep();
 						break;
 					case 4:
 						newSale.setInterestRate(InterestRate.OVERONEYEAR);
+						newSale.seteInterestRate(InterestRate.OVERONEYEAR);
+						newSale.rentalDepositStep();
 						break;
 					case 5:
 						return;
+
 					}
 				} else if (choose == 2) {
 					isRental = false;
-					try {
-						Thread.sleep(15000); // 15초 재우기
-						newSale.setAdvanceDeposit((int) (car.getPrice() * 0.2));
-						newSale.setAdvanceDeposit(true); // 15초 뒤에 선약금 들어감
-
-						Thread.sleep(15000);
-						newSale.setAdvanceDeposit((int) (car.getPrice() * 0.8));
-						newSale.setGetDeposit(true);
-					} catch (InterruptedException e) {
-						e.printStackTrace();
-					}
+					newSale.DepositStep();
 				}
 
 				loginDealer.getMySales().add(newSale);
 				c1.getMySales().add(newSale);
+				System.out.println("판매품의서 생성이 완료되었습니다.");
+
 				break;
 
 			case 2:
@@ -752,7 +756,7 @@ public class Runner {
 						System.out.println("수정 후 계약번호 : " + sale1.getContractNum());
 						break;
 					case 2:
-						System.out.println("수정 전 고객 이름: " + loginDealer.getName());
+						System.out.println("수정 전 고객 이름: " + sale1.getCustomer().getName());
 						System.out.print("[" + loginDealer.getRole().getName() + "] >");
 						String cmd4 = dataInput.readLine();
 						sale1.getCustomer().setName(cmd4);
@@ -793,7 +797,6 @@ public class Runner {
 
 	}
 
-	// 이거 해야됨
 	private static void employeeManagerByAdmin(Employee loginUser) throws NumberFormatException, IOException {
 		DataInput dataInput = DataInput.getInstance();
 

@@ -1,5 +1,8 @@
 package domain.sale;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import domain.car.Car;
 import domain.common.BaseObject;
 import domain.common.constants.ConfirmStatus;
@@ -23,10 +26,12 @@ public class Sale extends BaseObject {
 	private String accountNum; // 계좌번호
 	private boolean isRental;
 	private boolean confirm;
-	private boolean isAdvanceDeposit; //
+	private boolean isAdvanceDeposit;
 	private boolean isGetDeposit;
 	private ConfirmStatus confirmStatus; // 결재승인
-	private InterestRate interestRate; // 이자율
+	private InterestRate interestRate; // 렌탈기간
+	private double eInterestRate; // 이자율
+	private ExecutorService executorService;
 
 	public Sale(Dealer dealer, Customer customer, Car car, String bankName, String accountName, String accountNum,
 			boolean isRental) {
@@ -35,6 +40,7 @@ public class Sale extends BaseObject {
 		originalPrice = car.getPrice();
 		contractNum = salesId;
 		confirmStatus = ConfirmStatus.WAIT;
+		executorService = Executors.newSingleThreadExecutor();
 
 		this.dealer = dealer;
 		this.customer = customer;
@@ -109,8 +115,8 @@ public class Sale extends BaseObject {
 		return isAdvanceDeposit ? "예" : "아니오";
 	}
 
-	public boolean isGetDeposit() {
-		return isGetDeposit;
+	public String isGetDeposit() {
+		return isAdvanceDeposit ? "예" : "아니오";
 	}
 
 	public InterestRate getInterestRate() {
@@ -121,7 +127,7 @@ public class Sale extends BaseObject {
 		this.confirm = confirm;
 	}
 
-	public void setAdvanceDeposit(boolean isAdvanceDeposit) {
+	public void isAdvanceDeposit(boolean isAdvanceDeposit) {
 		this.isAdvanceDeposit = isAdvanceDeposit;
 	}
 
@@ -170,40 +176,107 @@ public class Sale extends BaseObject {
 	}
 
 	public void setInterestRate(InterestRate interestRate) {
+		this.interestRate = interestRate;
+	}
+
+	public double geteInterestRate() {
+		return eInterestRate;
+	}
+
+	// 선약금 완료 상태 설정 메서드
+	public void setAdvanceDepositStatus(boolean isAdvanceDeposit) {
+		this.isAdvanceDeposit = isAdvanceDeposit;
+	}
+
+	public void seteInterestRate(InterestRate interestRate) {
 		switch (interestRate) {
 		case THREEMONTH:
-			car.setPrice((int) (car.getPrice() * 1.5));
+			eInterestRate = 1.5;
 			break;
 		case SIXMONTH:
-			car.setPrice((int) (car.getPrice() * 1.4));
+			eInterestRate = 1.4;
 			break;
 		case ONEYEAR:
-			car.setPrice((int) (car.getPrice() * 1.35));
+			eInterestRate = 1.35;
 			break;
 		case OVERONEYEAR:
-			car.setPrice((int) (car.getPrice() * 1.2));
+			eInterestRate = 1.2;
 			break;
 		}
 	}
 
+	// 담단계로 넘어가는 메서드
+	public void rentalDepositStep() {
+		executorService.submit(() -> {
+			try {
+				Thread.sleep(3000);
+				setAdvanceDeposit((int) (car.getPrice() * 0.5));
+				setAdvanceDepositStatus(true);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	public void DepositStep() {
+		executorService.submit(() -> {
+			try {
+				Thread.sleep(3000);
+				setAdvanceDeposit((int) (car.getPrice() * 0.2));
+				setAdvanceDepositStatus(true);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
+	public void DepositStep2() {
+		executorService.submit(() -> {
+			try {
+				Thread.sleep(3000);
+				setGetDeposit(true);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
+	}
+
 	public void printInfo() {
-		System.out.println("id: " + "[" + getSalesId() + "]");
-		System.out.println("딜러명: " + getDealer().getName());
-		System.out.println("고객명: " + getCustomer().getName());
-		System.out.println("계약번호: " + getContractNum());
-		System.out.println("원금: " + getOriginalPrice());
-		System.out.println("선약금: " + getAdvanceDeposit());
-		System.out.println("은행명: " + getBankName());
-		System.out.println("예금주명: " + getAccountName());
-		System.out.println("계좌번호: " + getAccountNum());
-		System.out.println("렌탈유무: " + isRental());
-		System.out.println("결재상태: " + getConfirmStatus().getName());
-		System.out.println("선수금 입금여부: " + isAdvanceDeposit());
-		System.out.println("인도금 입금여부: " + isGetDeposit());
-		System.out.println("이자율: " + getInterestRate().getDate());
-		System.out.println("생성날짜: " + getCreatedAt());
-		System.out.println("수정날짜: " + getUpdatedAt());
-		System.out.println("-----------------------------------------------------------------------------------");
+		if (isRental) {
+			System.out.println("id: " + "[" + getSalesId() + "]");
+			System.out.println("딜러명: " + getDealer().getName());
+			System.out.println("고객명: " + getCustomer().getName());
+			System.out.println("계약번호: " + getContractNum());
+			System.out.println("원금: " + getOriginalPrice());
+			System.out.println("선약금: " + getAdvanceDeposit());
+			System.out.println("은행명: " + getBankName());
+			System.out.println("예금주명: " + getAccountName());
+			System.out.println("계좌번호: " + getAccountNum());
+			System.out.println("렌탈유무: " + isRental());
+			System.out.println("선수금 입금여부: " + isAdvanceDeposit());
+			System.out.println("랜탈기간: " + getInterestRate());
+			System.out.println("이자율: " + geteInterestRate() + "%");
+			System.out.println("생성날짜: " + getCreatedAt());
+			System.out.println("수정날짜: " + getUpdatedAt());
+			System.out.println("-----------------------------------------------------------------------------------");
+		} else {
+			System.out.println("id: " + "[" + getSalesId() + "]");
+			System.out.println("딜러명: " + getDealer().getName());
+			System.out.println("고객명: " + getCustomer().getName());
+			System.out.println("계약번호: " + getContractNum());
+			System.out.println("원금: " + getOriginalPrice());
+			System.out.println("선약금: " + getAdvanceDeposit());
+			System.out.println("은행명: " + getBankName());
+			System.out.println("예금주명: " + getAccountName());
+			System.out.println("계좌번호: " + getAccountNum());
+			System.out.println("렌탈유무: " + isRental());
+			System.out.println("결재상태: " + getConfirmStatus().getName());
+			System.out.println("선수금 입금여부: " + isAdvanceDeposit());
+			System.out.println("인도금 입금여부: " + isGetDeposit());
+			System.out.println("생성날짜: " + getCreatedAt());
+			System.out.println("수정날짜: " + getUpdatedAt());
+			System.out.println("-----------------------------------------------------------------------------------");
+		}
 	}
 
 }
